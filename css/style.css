@@ -8,9 +8,13 @@ body {
   color: #1e293b;
   line-height: 1.6;
   position: relative;
-  background-color: #F8F4EA;
-  background-image: linear-gradient(rgba(150, 120, 60, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(150, 120, 60, .05) 1px, transparent 1px);
-  background-size: 64px 64px
+  background-color: #E9E0C8;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(110, 85, 40, .05) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(110, 85, 40, .05) 0 1px, transparent 1px 4px),
+    linear-gradient(rgba(120, 90, 40, .09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 90, 40, .09) 1px, transparent 1px);
+  background-size: 5px 5px, 5px 5px, 64px 64px, 64px 64px
 }
 
 body::before {
@@ -19,7 +23,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: .2;
+  opacity: .3;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>")
 }
@@ -49,7 +53,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   padding: 0 5%;
-  background: #FAF7F0cc;
+  background: #F1E9D4dd;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #E4D9BC;
   position: sticky;
@@ -278,7 +282,6 @@ textarea {
   place-items: center;
   padding: 25px;
   position: relative;
-  overflow: hidden;
   background: #0f1f33
 }
 
@@ -286,7 +289,7 @@ textarea {
   position: relative;
   z-index: 1;
   width: min(420px, 100%);
-  background: #FDFBF5;
+  background: #F7F1DF;
   padding: 48px 42px 40px;
   border-radius: 2px;
   box-shadow: 0 40px 90px -18px #0f172a4d;
@@ -661,7 +664,7 @@ textarea {
 }
 
 .dossier-card {
-  background: #FDFBF5;
+  background: #F7F1DF;
   border: 1px solid #E4D9BC;
   border-radius: 4px 14px 14px 4px;
   padding: 20px 22px;
@@ -873,7 +876,7 @@ textarea {
 }
 
 .feature {
-  background: #FDFBF5;
+  background: #F7F1DF;
   border: 1px solid #E4D9BC;
   border-radius: 14px;
   padding: 24px;
