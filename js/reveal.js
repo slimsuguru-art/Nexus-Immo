@@ -7,7 +7,10 @@ if ('IntersectionObserver' in window && items.length) {
         io.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
   items.forEach((el) => io.observe(el));
 } else {
   items.forEach((el) => el.classList.add('is-visible'));
