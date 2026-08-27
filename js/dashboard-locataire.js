@@ -30,10 +30,21 @@ const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159
   if (!contrat) {
     box.innerHTML = `
       <div class="lease-empty">
-        <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
-        <h2>Aucune location en cours</h2>
-        <p>Vous n'avez pas de bail actif sur KAZA pour le moment.</p>
-        <a class="btn btn-primary" href="index.html#annonces">Chercher un logement</a>
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M20 55 60 25 100 55"/>
+          <path d="M28 52v40h64V52"/>
+          <path d="M50 92V68h20v24"/>
+          <circle cx="90" cy="32" r="11"/>
+          <path d="M98 40 111 53"/>
+          <path d="M103 48l5-5"/>
+        </svg>
+        <h2>Pas encore de logement</h2>
+        <p>Dès qu'un bailleur vous ajoute à un contrat sur KAZA, votre logement, la durée de votre bail et son contact apparaissent ici.</p>
+        <div class="lease-empty-actions">
+          <a class="btn btn-primary" href="index.html#annonces">Chercher un logement</a>
+          <a class="btn btn-ghost" href="comment-ca-marche.html">Comment ça marche</a>
+        </div>
+        <p class="lease-empty-note">Aucune donnée fictive : cet espace ne se remplit qu'avec de vrais contrats.</p>
       </div>`;
     return;
   }
