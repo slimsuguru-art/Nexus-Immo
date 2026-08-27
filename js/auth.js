@@ -17,7 +17,7 @@ if (lf) lf.addEventListener('submit', async e => {
     m.textContent = error.message;
     return
   }
-  location.href = 'dashboard.html'
+  location.href = new URLSearchParams(location.search).get('redirect') || 'dashboard.html'
 });
 const rf = document.querySelector('#registerForm');
 if (rf) rf.addEventListener('submit', async e => {
