@@ -24,6 +24,21 @@ if (detail)(async () => {
     `<div><img class="detail-image" src="${p.image_url||fallback}" alt=""></div><div class="detail-card"><span class="eyebrow">${p.type||'Logement'}</span><h1>${p.title}</h1><div class="detail-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div><p>${p.description||''}</p><p><strong>Localisation</strong><br>${p.city||''}${p.district?' — '+p.district:''}</p><p><strong>Pièces</strong><br>${p.rooms||'-'}</p><a class="btn btn-primary" href="mailto:?subject=KAZA - ${encodeURIComponent(p.title)}">Contacter le bailleur</a></div>`
 })();
 const pf = document.querySelector('#publishForm');
+if (pf)(async () => {
+  const {
+    data: {
+      user
+    }
+  } = await supabase.auth.getUser();
+  if (!user) {
+    location.href = 'login.html?redirect=publish.html';
+    return
+  }
+  if (user.user_metadata?.role === 'locataire') {
+    location.href = 'dashboard-locataire.html';
+    return
+  }
+})();
 if (pf) pf.addEventListener('submit', async e => {
   e.preventDefault();
   const m = document.querySelector('#publishMessage'),
