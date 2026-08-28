@@ -1,17 +1,30 @@
 import {
   supabase
 } from './supabase.js';
+
 const grid = document.querySelector('#propertyGrid');
 let all = [];
-const fallback = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80';
+
+const placeholder = `<div class="property-image--placeholder"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></div>`;
 
 function card(p) {
-  return `<article class="property-card"><a href="property.html?id=${p.id}"><img class="property-image" src="${p.image_url||fallback}" alt=""><div class="property-body"><h3>${p.title||'Sans titre'}</h3><div class="property-meta">${p.type||''} · ${p.city||''}${p.district?' · '+p.district:''} · ${p.rooms||'-'} pièce(s)</div><div class="property-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div></div></a></article>`
+  const image = p.image_url
+    ? `<img class="property-image" src="${p.image_url}" alt="">`
+    : placeholder;
+  const badge = p.type ? `<span class="property-badge">${p.type}</span>` : '';
+  return `<article class="property-card"><a href="property.html?id=${p.id}"><div class="property-media">${image}${badge}</div><div class="property-body"><h3>${p.title||'Sans titre'}</h3><div class="property-meta">${p.city||''}${p.district?' · '+p.district:''} · ${p.rooms||'-'} pièce(s)</div><div class="property-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div></div></a></article>`;
+}
+
+function emptyState(title, text) {
+  return `<div class="empty-state empty-state--rich"><svg viewBox="0 0 24 24"><path d="M11 4a7 7 0 1 0 4.9 12l4.6 4.6M11 4a7 7 0 0 1 7 7"/></svg><h3>${title}</h3><p>${text}</p></div>`;
 }
 
 function render(x) {
-  grid.innerHTML = x.length ? x.map(card).join('') : '<div class="empty-state">Aucun logement trouvé.</div>'
+  grid.innerHTML = x.length
+    ? x.map(card).join('')
+    : emptyState('Aucun logement trouvé', 'Essayez une autre ville ou élargissez votre budget.');
 }
+
 async function load() {
   const {
     data,
@@ -20,17 +33,19 @@ async function load() {
     ascending: false
   });
   if (error) {
-    grid.innerHTML = '<div class="empty-state">Configurez la base Supabase avec supabase_schema.sql.</div>';
-    return
+    grid.innerHTML = emptyState('Aucune annonce pour l\'instant', 'KAZA n\'affiche que des logements réels : soyez le premier à publier le vôtre.');
+    return;
   }
   all = data || [];
-  render(all)
+  render(all);
 }
+
 document.querySelector('#searchForm')?.addEventListener('submit', e => {
   e.preventDefault();
   const q = searchLocation.value.toLowerCase().trim(),
     t = searchType.value,
     max = Number(searchMaxPrice.value) || Infinity;
-  render(all.filter(p => (!q || `${p.city||''} ${p.district||''}`.toLowerCase().includes(q)) && (!t || p.type === t) && Number(p.price || 0) <= max))
+  render(all.filter(p => (!q || `${p.city||''} ${p.district||''}`.toLowerCase().includes(q)) && (!t || p.type === t) && Number(p.price || 0) <= max));
 });
+
 load();
