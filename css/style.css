@@ -435,14 +435,85 @@ textarea {
   background: #0f1f33
 }
 
-.auth-card {
+.pass-card {
   position: relative;
   z-index: 1;
-  width: min(420px, 100%);
+  width: min(460px, 100%);
+  display: grid;
+  grid-template-columns: 52px 1fr;
   background: #F7F1DF;
-  padding: 48px 42px 40px;
-  border-radius: 2px;
-  box-shadow: 0 40px 90px -18px #0f172a4d;
+  border-radius: 3px 20px 20px 3px;
+  overflow: visible;
+  box-shadow: 0 40px 90px -18px #0f172a66;
+}
+
+.pass-stub {
+  background: #1e3a5f;
+  border-right: 2px dashed #B7975A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px 0 0 3px
+}
+
+.pass-stub span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .3em;
+  color: #cddcee;
+  text-transform: uppercase
+}
+
+.pass-main {
+  position: relative;
+  padding: 46px 40px 38px;
+  overflow: hidden;
+  border-radius: 0 20px 20px 0
+}
+
+.pass-seal {
+  position: absolute;
+  top: -20px;
+  right: 22px;
+  width: 64px;
+  height: 64px;
+  transform: rotate(-12deg);
+  filter: drop-shadow(0 8px 16px #0f172a3d)
+}
+
+.pass-seal svg {
+  width: 100%;
+  height: 100%
+}
+
+.pass-seal .seal-ring {
+  fill: none;
+  stroke: #B7975A;
+  stroke-width: 2.5
+}
+
+.pass-seal .seal-ring--inner {
+  stroke-width: 1.4;
+  opacity: .6
+}
+
+.pass-seal .seal-check {
+  fill: none;
+  stroke: #B7975A;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+.pass-seal .seal-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  fill: #B7975A;
+  text-anchor: middle;
+  letter-spacing: .05em
 }
 
 .auth-card-head {
@@ -465,8 +536,8 @@ textarea {
   margin-bottom: 12px
 }
 
-.auth-card input,
-.auth-card select {
+.pass-main input,
+.pass-main select {
   border: none;
   border-bottom: 1px solid #E4D9BC;
   border-radius: 0;
@@ -474,12 +545,12 @@ textarea {
   background: transparent
 }
 
-.auth-card input:focus,
-.auth-card select:focus {
+.pass-main input:focus,
+.pass-main select:focus {
   border-bottom-color: #1e3a5f
 }
 
-.auth-card .btn-primary {
+.pass-main .btn-primary {
   margin-top: 10px;
   border-radius: 999px;
   letter-spacing: .02em
@@ -667,8 +738,18 @@ textarea {
     gap: 8px
   }
 
-  .auth-card {
-    padding: 28px 22px
+  .pass-card {
+    grid-template-columns: 34px 1fr
+  }
+
+  .pass-main {
+    padding: 40px 24px 30px
+  }
+
+  .pass-seal {
+    width: 52px;
+    height: 52px;
+    right: 14px
   }
 
   .detail-image {
@@ -1664,4 +1745,154 @@ textarea {
   stroke: #B7975A;
   fill: none;
   stroke-width: 1.3
+}
+
+/* Bailleur dashboard: insights row (revenue curve, occupancy, deadlines) */
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1.4fr .8fr 1fr;
+  gap: 18px;
+  margin-bottom: 40px
+}
+
+.chart-card,
+.ring-card,
+.upcoming-card {
+  background: #fff;
+  border: 1px solid #c7d2dd;
+  border-radius: 16px;
+  padding: 22px
+}
+
+.chart-card h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 4px 0 10px;
+  color: #1e293b
+}
+
+.revenue-chart {
+  width: 100%;
+  height: 130px;
+  display: block
+}
+
+.chart-axis {
+  stroke: #dbe4ee;
+  stroke-width: 1
+}
+
+.chart-area {
+  fill: #1e3a5f14
+}
+
+.chart-line {
+  fill: none;
+  stroke: #1e3a5f;
+  stroke-width: 2
+}
+
+.chart-dot {
+  fill: #1e3a5f
+}
+
+.chart-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  fill: #94a3b8
+}
+
+.ring-card {
+  text-align: center
+}
+
+.occupancy-ring {
+  width: 110px;
+  height: 110px;
+  margin: 6px auto 0
+}
+
+.ring-bg {
+  fill: none;
+  stroke: #e4e9ee;
+  stroke-width: 9
+}
+
+.ring-fill {
+  fill: none;
+  stroke: #1e3a5f;
+  stroke-width: 9;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dasharray .5s ease
+}
+
+.ring-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  font-weight: 600;
+  fill: #1e293b
+}
+
+.ring-caption {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #64748b
+}
+
+.upcoming-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px
+}
+
+.upcoming-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef1f5;
+  font-size: 13px
+}
+
+.upcoming-row:last-child {
+  border-bottom: 0
+}
+
+.upcoming-row strong {
+  display: block;
+  font-size: 13.5px
+}
+
+.upcoming-row span {
+  color: #64748b;
+  font-size: 12px
+}
+
+.upcoming-days {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  color: #1e3a5f;
+  background: #e4e9ee;
+  padding: 4px 10px;
+  border-radius: 999px
+}
+
+.upcoming-row--urgent .upcoming-days {
+  color: #9a3412;
+  background: #ffedd5
+}
+
+.upcoming-empty {
+  color: #94a3b8;
+  font-size: 13px
+}
+
+@media(max-width:1000px) {
+  .insights-grid {
+    grid-template-columns: 1fr
+  }
 }
