@@ -31,20 +31,31 @@
       <line x1="32" y1="8" x2="32" y2="32" />
     </svg>
   </div>
-  <main class="auth-card">
-    <div class="auth-card-head">
-      <a class="brand" href="index.html">KAZA</a>
-      <span class="auth-kicker">Espace membre</span>
-      <h1>Bienvenue</h1>
-      <p>Connectez-vous à votre espace.</p>
+  <main class="pass-card">
+    <div class="pass-stub" aria-hidden="true"><span>Accès KAZA</span></div>
+    <div class="pass-main">
+      <div class="pass-seal" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <circle class="seal-ring" cx="50" cy="50" r="44" />
+          <circle class="seal-ring seal-ring--inner" cx="50" cy="50" r="35" />
+          <path class="seal-check" d="M34 52 L46 64 L68 38" />
+          <text x="50" y="86" class="seal-label">KAZA</text>
+        </svg>
+      </div>
+      <div class="auth-card-head">
+        <a class="brand" href="index.html">KAZA</a>
+        <span class="auth-kicker">Espace membre</span>
+        <h1>Bienvenue</h1>
+        <p>Connectez-vous à votre espace.</p>
+      </div>
+      <form id="loginForm" class="form-stack">
+        <label>Email<input id="loginEmail" type="email" required></label>
+        <label>Mot de passe<input id="loginPassword" type="password" required></label>
+        <button class="btn btn-primary">Se connecter</button>
+        <div id="loginMessage" class="form-message"></div>
+      </form>
+      <p class="auth-switch">Pas encore de compte ? <a href="register.html">Créer un compte</a></p>
     </div>
-    <form id="loginForm" class="form-stack">
-      <label>Email<input id="loginEmail" type="email" required></label>
-      <label>Mot de passe<input id="loginPassword" type="password" required></label>
-      <button class="btn btn-primary">Se connecter</button>
-      <div id="loginMessage" class="form-message"></div>
-    </form>
-    <p class="auth-switch">Pas encore de compte ? <a href="register.html">Créer un compte</a></p>
   </main>
   <script type="module" src="js/auth.js"></script>
 </body>
