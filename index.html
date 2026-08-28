@@ -15,20 +15,46 @@
 
 <body>
   <header class="site-header"><a class="brand" href="index.html">KAZA</a>
-    <nav class="nav"><a href="#annonces">Logements</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="login.html">Connexion</a><a
+    <nav class="nav"><a href="#annonces" class="nav-active">Logements</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="login.html">Connexion</a><a
         class="btn btn-primary btn-sm" href="publish.html">Publier</a></nav>
   </header>
   <section class="hero">
-    <div class="hero-content"><span class="eyebrow">La location, simplement.</span>
-      <h1>Trouvez un logement qui vous ressemble.</h1>
-      <p>Une plateforme simple pour mettre en relation bailleurs et locataires.</p>
-      <form id="searchForm" class="search-box"><input id="searchLocation" placeholder="Ville ou quartier"><select id="searchType">
-          <option value="">Type</option>
-          <option>Appartement</option>
-          <option>Studio</option>
-          <option>Villa</option>
-          <option>Maison</option>
-        </select><input id="searchMaxPrice" type="number" placeholder="Budget max (FCFA)"><button class="btn btn-primary">Rechercher</button></form>
+    <div class="hero-marks" aria-hidden="true">
+      <span class="hero-mark hero-mark--tl"></span>
+      <span class="hero-mark hero-mark--tr"></span>
+    </div>
+    <div class="hero-content">
+      <span class="eyebrow">La location, simplement.</span>
+      <h1>Trouvez un logement <em>qui vous ressemble.</em></h1>
+      <p>Une plateforme simple pour mettre en relation bailleurs et locataires — sans intermédiaire caché.</p>
+      <div class="hero-trust">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 12.5 10.8 15 16 9" />
+        </svg>
+        <span>Chaque annonce ci-dessous est réelle — aucun logement de démonstration.</span>
+      </div>
+      <form id="searchForm" class="search-box">
+        <div class="search-field">
+          <label for="searchLocation">Où</label>
+          <input id="searchLocation" placeholder="Ville ou quartier">
+        </div>
+        <div class="search-field">
+          <label for="searchType">Type</label>
+          <select id="searchType">
+            <option value="">Tous types</option>
+            <option>Appartement</option>
+            <option>Studio</option>
+            <option>Villa</option>
+            <option>Maison</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label for="searchMaxPrice">Budget max</label>
+          <input id="searchMaxPrice" type="number" placeholder="FCFA / mois">
+        </div>
+        <button class="btn btn-primary search-submit">Rechercher</button>
+      </form>
     </div>
   </section>
   <main id="annonces" class="section">
