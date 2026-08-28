@@ -31,27 +31,38 @@
       <line x1="32" y1="8" x2="32" y2="32" />
     </svg>
   </div>
-  <main class="auth-card">
-    <div class="auth-card-head">
-      <a class="brand" href="index.html">KAZA</a>
-      <span class="auth-kicker">Créer un compte</span>
-      <h1>Créer votre compte</h1>
-      <p>Choisissez votre profil.</p>
+  <main class="pass-card">
+    <div class="pass-stub" aria-hidden="true"><span>Accès KAZA</span></div>
+    <div class="pass-main">
+      <div class="pass-seal" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <circle class="seal-ring" cx="50" cy="50" r="44" />
+          <circle class="seal-ring seal-ring--inner" cx="50" cy="50" r="35" />
+          <path class="seal-check" d="M34 52 L46 64 L68 38" />
+          <text x="50" y="86" class="seal-label">KAZA</text>
+        </svg>
+      </div>
+      <div class="auth-card-head">
+        <a class="brand" href="index.html">KAZA</a>
+        <span class="auth-kicker">Créer un compte</span>
+        <h1>Créer votre compte</h1>
+        <p>Choisissez votre profil.</p>
+      </div>
+      <form id="registerForm" class="form-stack">
+        <label>Nom complet<input id="registerName" required></label>
+        <label>Email<input id="registerEmail" type="email" required></label>
+        <label>Profil
+          <select id="registerRole">
+            <option value="locataire">Locataire</option>
+            <option value="bailleur">Bailleur</option>
+          </select>
+        </label>
+        <label>Mot de passe<input id="registerPassword" type="password" minlength="6" required></label>
+        <button class="btn btn-primary">Créer mon compte</button>
+        <div id="registerMessage" class="form-message"></div>
+      </form>
+      <p class="auth-switch">Déjà inscrit ? <a href="login.html">Se connecter</a></p>
     </div>
-    <form id="registerForm" class="form-stack">
-      <label>Nom complet<input id="registerName" required></label>
-      <label>Email<input id="registerEmail" type="email" required></label>
-      <label>Profil
-        <select id="registerRole">
-          <option value="locataire">Locataire</option>
-          <option value="bailleur">Bailleur</option>
-        </select>
-      </label>
-      <label>Mot de passe<input id="registerPassword" type="password" minlength="6" required></label>
-      <button class="btn btn-primary">Créer mon compte</button>
-      <div id="registerMessage" class="form-message"></div>
-    </form>
-    <p class="auth-switch">Déjà inscrit ? <a href="login.html">Se connecter</a></p>
   </main>
   <script type="module" src="js/auth.js"></script>
 </body>
