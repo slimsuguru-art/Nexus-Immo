@@ -93,12 +93,39 @@ textarea {
 }
 
 .hero {
-  padding: 90px 5%;
-  background: linear-gradient(135deg, #0f172a, #1e3a8a);
-  color: #fff
+  position: relative;
+  padding: 110px 5% 90px;
+  overflow: hidden
+}
+
+.hero-marks {
+  position: absolute;
+  inset: 28px;
+  pointer-events: none
+}
+
+.hero-mark {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-left: 1.5px solid #B7975A;
+  border-top: 1.5px solid #B7975A;
+  opacity: .55
+}
+
+.hero-mark--tl {
+  top: 0;
+  left: 0
+}
+
+.hero-mark--tr {
+  top: 0;
+  right: 0;
+  transform: rotate(90deg)
 }
 
 .hero-content {
+  position: relative;
   max-width: 1050px;
   margin: auto
 }
@@ -114,42 +141,92 @@ textarea {
 }
 
 .hero .eyebrow {
-  color: #bfdbfe
+  color: #B7975A
 }
 
 .hero h1 {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 600;
-  max-width: 760px;
-  font-size: clamp(38px, 6vw, 68px);
-  line-height: 1.05;
+  max-width: 780px;
+  font-size: clamp(38px, 6vw, 66px);
+  line-height: 1.06;
   letter-spacing: -.03em;
-  margin: 0 0 20px
+  margin: 0 0 20px;
+  color: #1a2b1f
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: #1e3a5f
 }
 
 .hero p {
-  max-width: 620px;
-  color: #dbeafe;
+  max-width: 600px;
+  color: #5c5439;
   font-size: 17px;
-  margin-bottom: 30px
+  margin-bottom: 34px
+}
+
+.hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -14px 0 30px;
+  font-size: 13px;
+  color: #3F6B54
+}
+
+.hero-trust svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  fill: none;
+  stroke: #3F6B54;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round
 }
 
 .search-box {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr auto;
-  gap: 10px;
-  background: #fff;
-  padding: 10px;
-  border-radius: 18px
+  gap: 0;
+  background: #F7F1DF;
+  border: 1px solid #E4D9BC;
+  padding: 8px;
+  border-radius: 18px;
+  box-shadow: 0 24px 50px -20px #1e3a5f2e
+}
+
+.search-field {
+  padding: 8px 18px;
+  border-right: 1px solid #E4D9BC
+}
+
+.search-field label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #B7975A;
+  margin-bottom: 4px
 }
 
 .search-box input,
 .search-box select {
   border: 0;
   outline: 0;
-  padding: 14px;
-  background: #f8fafc;
-  border-radius: 11px
+  padding: 4px 0;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+  color: #1e293b
+}
+
+.search-submit {
+  align-self: center;
+  margin: 0 4px
 }
 
 .btn {
@@ -224,14 +301,58 @@ textarea {
   border: 1px solid #e2e8f0;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 8px 30px #0f172a0d
+  box-shadow: 0 8px 30px #0f172a0d;
+  transition: transform .25s ease, box-shadow .25s ease
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px #1e3a5f1f
+}
+
+.property-media {
+  position: relative
+}
+
+.property-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #1e293bcc;
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  padding: 5px 12px;
+  border-radius: 999px
 }
 
 .property-image {
   width: 100%;
   height: 210px;
   object-fit: cover;
-  background: #e2e8f0
+  background: #e2e8f0;
+  display: block
+}
+
+.property-image--placeholder {
+  width: 100%;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F1EBDA;
+  background-image: linear-gradient(rgba(120, 90, 40, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 90, 40, .08) 1px, transparent 1px);
+  background-size: 18px 18px
+}
+
+.property-image--placeholder svg {
+  width: 40px;
+  height: 40px;
+  stroke: #B7975A;
+  fill: none;
+  stroke-width: 1.4
 }
 
 .property-body {
@@ -257,13 +378,42 @@ textarea {
 }
 
 .empty-state {
-  padding: 40px;
+  padding: 60px 30px;
   background: #fff;
   border: 1px dashed #cbd5e1;
   border-radius: 16px;
   color: #64748b;
   text-align: center;
   grid-column: 1/-1
+}
+
+.empty-state--rich {
+  border-style: solid;
+  border-color: #E4D9BC;
+  background: #F7F1DF
+}
+
+.empty-state--rich svg {
+  width: 44px;
+  height: 44px;
+  stroke: #B7975A;
+  fill: none;
+  stroke-width: 1.5;
+  margin-bottom: 16px
+}
+
+.empty-state--rich h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #1e293b
+}
+
+.empty-state--rich p {
+  margin: 0 0 20px;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto
 }
 
 .footer {
@@ -493,6 +643,16 @@ textarea {
     grid-template-columns: 1fr
   }
 
+  .search-field {
+    border-right: 0;
+    border-bottom: 1px solid #E4D9BC
+  }
+
+  .search-submit {
+    margin: 6px 4px 0;
+    width: calc(100% - 8px)
+  }
+
   .section {
     padding: 45px 18px
   }
@@ -619,6 +779,7 @@ textarea {
 }
 
 .product-hero {
+  position: relative;
   max-width: 1180px;
   margin: auto;
   padding: 70px 5% 40px;
@@ -1394,8 +1555,43 @@ textarea {
   color: #7c8c80
 }
 
-/* Locataire space — distinct, calm identity (sage), separate from the
-   gold/blueprint palette used on the marketing and bailleur pages */
+/* Bailleur space — distinct dense/management identity (slate blueprint),
+   echoes the trust-card "plan" motif already tied to the bailleur role */
+.bailleur-page {
+  background-color: #E4E9EE;
+  background-image: linear-gradient(rgba(30, 58, 95, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 58, 95, .09) 1px, transparent 1px);
+  background-size: 36px 36px
+}
+
+.bailleur-page .site-header {
+  background: #EDF1F5cc;
+  border-bottom-color: #c7d2dd
+}
+
+.bailleur-page .brand,
+.bailleur-page .eyebrow {
+  color: #1e3a5f
+}
+
+.bailleur-page .btn-primary {
+  background: #1e3a5f
+}
+
+.bailleur-page .btn-ghost {
+  background: #dfe6ee;
+  color: #1e3a5f
+}
+
+.bailleur-page .property-card,
+.bailleur-page .stat,
+.bailleur-page .contrat-row,
+.bailleur-page .empty-state {
+  border-color: #c7d2dd
+}
+
+.bailleur-page .text-link {
+  color: #1e3a5f
+}
 .locataire-page {
   background-color: #ECF1E7;
   background-image: radial-gradient(rgba(63, 107, 84, .14) 1px, transparent 1px);
@@ -1448,4 +1644,24 @@ textarea {
     height: 220px;
     min-height: 0
   }
+}
+
+/* Honest image placeholders (detail page + tenant lease card) — no stock photos standing in for a real listing */
+.detail-image--placeholder,
+.lease-image--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F1EBDA;
+  background-image: linear-gradient(rgba(120, 90, 40, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 90, 40, .08) 1px, transparent 1px);
+  background-size: 22px 22px
+}
+
+.detail-image--placeholder svg,
+.lease-image--placeholder svg {
+  width: 56px;
+  height: 56px;
+  stroke: #B7975A;
+  fill: none;
+  stroke-width: 1.3
 }
