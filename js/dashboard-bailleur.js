@@ -1,6 +1,72 @@
 import { supabase } from './supabase.js';
 
-const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80';
+const placeholderIcon = `<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>`;
+
+function last6Months() {
+  const now = new Date(), out = [];
+  for (let i = 5; i >= 0; i--) out.push(new Date(now.getFullYear(), now.getMonth() - i, 1));
+  return out;
+}
+
+function revenueSeries(contrats) {
+  return last6Months().map(m => {
+    const monthEnd = new Date(m.getFullYear(), m.getMonth() + 1, 0);
+    const total = contrats
+      .filter(c => new Date(c.date_debut) <= monthEnd && new Date(c.date_fin) >= m)
+      .reduce((sum, c) => sum + Number(c.loyer || 0), 0);
+    return { label: m.toLocaleDateString('fr-FR', { month: 'short' }), total };
+  });
+}
+
+function renderChart(series) {
+  const w = 520, h = 150, pad = 26;
+  const max = Math.max(1, ...series.map(s => s.total));
+  const stepX = (w - pad * 2) / (series.length - 1 || 1);
+  const pts = series.map((s, i) => [pad + i * stepX, h - pad - (s.total / max) * (h - pad * 2 - 16)]);
+  const line = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const area = `${line} L${pts[pts.length - 1][0]},${h - pad} L${pts[0][0]},${h - pad} Z`;
+  const dots = pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" class="chart-dot"/>`).join('');
+  const labels = series.map((s, i) => `<text x="${pts[i][0]}" y="${h - 6}" class="chart-label" text-anchor="middle">${s.label}</text>`).join('');
+  return `<svg viewBox="0 0 ${w} ${h}" class="revenue-chart" preserveAspectRatio="none">
+    <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" class="chart-axis"/>
+    <path d="${area}" class="chart-area"/>
+    <path d="${line}" class="chart-line"/>
+    ${dots}${labels}
+  </svg>`;
+}
+
+function renderRing(list) {
+  const total = list.length;
+  const rented = list.filter(p => p.status === 'rented').length;
+  const pct = total ? Math.round((rented / total) * 100) : 0;
+  const r = 42, c = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 100 100" class="occupancy-ring">
+    <circle cx="50" cy="50" r="${r}" class="ring-bg"/>
+    <circle cx="50" cy="50" r="${r}" class="ring-fill" stroke-dasharray="${(pct / 100 * c).toFixed(1)} ${c.toFixed(1)}"/>
+    <text x="50" y="56" text-anchor="middle" class="ring-label">${pct}%</text>
+  </svg><p class="ring-caption">${rented} logement(s) loué(s) sur ${total}</p>`;
+}
+
+function renderUpcoming(contrats) {
+  const now = new Date();
+  const soon = contrats
+    .filter(c => c.statut === 'actif')
+    .map(c => ({ ...c, joursRestants: Math.round((new Date(c.date_fin) - now) / 86400000) }))
+    .filter(c => c.joursRestants >= 0 && c.joursRestants <= 60)
+    .sort((a, b) => a.joursRestants - b.joursRestants);
+
+  if (!soon.length) return '<p class="upcoming-empty">Aucune échéance dans les 60 prochains jours.</p>';
+
+  return soon.map(c => `
+    <div class="upcoming-row${c.joursRestants <= 15 ? ' upcoming-row--urgent' : ''}">
+      <div>
+        <strong>${c.properties?.title || 'Logement'}</strong>
+        <span>${c.profiles?.full_name || 'Locataire'}</span>
+      </div>
+      <span class="upcoming-days">${c.joursRestants} j</span>
+    </div>
+  `).join('');
+}
 
 (async () => {
   const { data: { user } } = await supabase.auth.getUser();
@@ -32,6 +98,13 @@ const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159
 
   const contratList = contrats || [];
 
+  const series = revenueSeries(contratList);
+  document.querySelector('#revenueTotal').textContent =
+    series[series.length - 1].total.toLocaleString('fr-FR') + ' FCFA / mois';
+  document.querySelector('#revenueChart').innerHTML = renderChart(series);
+  document.querySelector('#occupancyRing').innerHTML = renderRing(list);
+  document.querySelector('#upcomingList').innerHTML = renderUpcoming(contratList);
+
   document.querySelector('#stats').innerHTML = `
     <div class="stat"><span>Annonces</span><strong>${list.length}</strong></div>
     <div class="stat"><span>Disponibles</span><strong>${list.filter(p => p.status === 'available').length}</strong></div>
@@ -45,7 +118,7 @@ const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159
     grid.innerHTML = list.length
       ? list.map(p => `
         <article class="property-card">
-          <img class="property-image" src="${p.image_url || fallbackImg}" alt="">
+          ${p.image_url ? `<img class="property-image" src="${p.image_url}" alt="">` : `<div class="property-image--placeholder">${placeholderIcon}</div>`}
           <div class="property-body">
             <h3>${p.title}</h3>
             <div class="property-meta">${p.city || ''} · ${p.status}</div>
