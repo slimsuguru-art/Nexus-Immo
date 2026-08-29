@@ -5,6 +5,9 @@ import {
   villes,
   quartiersDe
 } from './gabon-locations.js';
+import {
+  enhanceSelect
+} from './custom-select.js';
 
 const grid = document.querySelector('#propertyGrid');
 let all = [];
@@ -23,6 +26,9 @@ if (searchVille) {
     villes.map(v => `<option>${v.nom}</option>`).join('');
   fillQuartiers('');
   searchVille.addEventListener('change', () => fillQuartiers(searchVille.value));
+  enhanceSelect(searchVille);
+  enhanceSelect(searchQuartier);
+  enhanceSelect(document.querySelector('#searchType'));
 }
 
 const placeholder = `<div class="property-image--placeholder"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></div>`;
