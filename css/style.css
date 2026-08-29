@@ -189,7 +189,7 @@ textarea {
 
 .search-box {
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr auto;
+  grid-template-columns: 1fr 1fr .9fr 1fr auto;
   gap: 0;
   background: #F7F1DF;
   border: 1px solid #E4D9BC;
