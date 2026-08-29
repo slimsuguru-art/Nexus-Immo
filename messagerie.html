@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Messagerie — KAZA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">KAZA</a>
+    <nav class="nav">
+      <a href="index.html">Logements</a>
+      <a href="dashboard.html">Mon espace</a>
+      <button id="logoutBtn" class="btn btn-ghost">Déconnexion</button>
+    </nav>
+  </header>
+
+  <main class="messagerie" id="messagerie">
+    <aside class="conv-list" id="conversationList"></aside>
+
+    <section class="thread-panel" id="threadPanel">
+      <div class="thread-empty" id="threadEmpty">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 4h16v12H7l-3 3V4Z" />
+        </svg>
+        <p>Sélectionnez une conversation pour l'ouvrir.</p>
+      </div>
+      <div class="thread-body" id="threadBody">
+        <div class="thread-header">
+          <button id="threadBack" class="thread-back" aria-label="Retour">←</button>
+          <span id="threadHeader"></span>
+        </div>
+        <div class="thread-messages" id="threadMessages"></div>
+        <form id="composeForm" class="compose-form">
+          <input id="composeInput" placeholder="Écrire un message…" autocomplete="off" required>
+          <button class="btn btn-primary">Envoyer</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/messagerie.js"></script>
+</body>
+
+</html>
