@@ -1,6 +1,23 @@
 import {
   supabase
 } from './supabase.js';
+import {
+  villes,
+  quartiersDe
+} from './gabon-locations.js';
+
+const cityField = document.querySelector('#city');
+const districtField = document.querySelector('#district');
+
+function fillDistricts(nomVille) {
+  districtField.innerHTML = quartiersDe(nomVille).map(q => `<option>${q}</option>`).join('');
+}
+
+if (cityField) {
+  cityField.innerHTML = villes.map(v => `<option>${v.nom}</option>`).join('');
+  fillDistricts(cityField.value);
+  cityField.addEventListener('change', () => fillDistricts(cityField.value));
+}
 const params = new URLSearchParams(location.search),
   id = params.get('id'),
   detail = document.querySelector('#propertyDetail');
