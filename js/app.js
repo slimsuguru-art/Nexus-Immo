@@ -1,9 +1,29 @@
 import {
   supabase
 } from './supabase.js';
+import {
+  villes,
+  quartiersDe
+} from './gabon-locations.js';
 
 const grid = document.querySelector('#propertyGrid');
 let all = [];
+
+const searchVille = document.querySelector('#searchVille');
+const searchQuartier = document.querySelector('#searchQuartier');
+
+function fillQuartiers(nomVille) {
+  const options = quartiersDe(nomVille);
+  searchQuartier.innerHTML = '<option value="">Tous quartiers</option>' +
+    options.map(q => `<option>${q}</option>`).join('');
+}
+
+if (searchVille) {
+  searchVille.innerHTML = '<option value="">Toutes villes</option>' +
+    villes.map(v => `<option>${v.nom}</option>`).join('');
+  fillQuartiers('');
+  searchVille.addEventListener('change', () => fillQuartiers(searchVille.value));
+}
 
 const placeholder = `<div class="property-image--placeholder"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></div>`;
 
@@ -42,10 +62,16 @@ async function load() {
 
 document.querySelector('#searchForm')?.addEventListener('submit', e => {
   e.preventDefault();
-  const q = searchLocation.value.toLowerCase().trim(),
+  const ville = searchVille.value,
+    quartier = searchQuartier.value,
     t = searchType.value,
     max = Number(searchMaxPrice.value) || Infinity;
-  render(all.filter(p => (!q || `${p.city||''} ${p.district||''}`.toLowerCase().includes(q)) && (!t || p.type === t) && Number(p.price || 0) <= max));
+  render(all.filter(p =>
+    (!ville || p.city === ville) &&
+    (!quartier || p.district === quartier) &&
+    (!t || p.type === t) &&
+    Number(p.price || 0) <= max
+  ));
 });
 
 load();
