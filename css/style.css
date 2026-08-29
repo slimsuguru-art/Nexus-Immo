@@ -200,7 +200,14 @@ textarea {
 
 .search-field {
   padding: 8px 18px;
-  border-right: 1px solid #E4D9BC
+  border-right: 1px solid #E4D9BC;
+  border-radius: 10px;
+  transition: background .2s ease
+}
+
+.search-field:hover,
+.search-field:focus-within {
+  background: #F1EAD8
 }
 
 .search-field label {
@@ -220,8 +227,21 @@ textarea {
   padding: 4px 0;
   background: transparent;
   width: 100%;
+  font-family: 'Inter', Arial, sans-serif;
   font-size: 14px;
   color: #1e293b
+}
+
+.search-box select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 22px;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 13px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e3a5f' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>")
 }
 
 .search-submit {
