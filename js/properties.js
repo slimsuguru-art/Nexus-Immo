@@ -46,6 +46,8 @@ const pf = document.querySelector('#publishForm');
 const imageInput = document.querySelector('#imageFile');
 const preview = document.querySelector('#uploadPreview');
 const previewDefault = preview?.innerHTML;
+const editId = new URLSearchParams(location.search).get('edit');
+let existingImageUrl = null;
 
 imageInput?.addEventListener('change', () => {
   const file = imageInput.files[0];
@@ -72,6 +74,32 @@ if (pf)(async () => {
     location.href = 'dashboard-locataire.html';
     return
   }
+
+  if (editId) {
+    const {
+      data: p
+    } = await supabase.from('properties').select('*').eq('id', editId).eq('owner_id', user.id).single();
+    if (!p) {
+      document.querySelector('#publishMessage').textContent = "Annonce introuvable ou vous n'en êtes pas propriétaire.";
+      pf.querySelector('button').disabled = true;
+      return
+    }
+    document.querySelector('#publishTitle').textContent = "Modifier l'annonce";
+    pf.querySelector('button').textContent = 'Enregistrer les modifications';
+    title.value = p.title || '';
+    description.value = p.description || '';
+    type.value = p.type || 'Appartement';
+    price.value = p.price || '';
+    cityField.value = p.city || villes[0].nom;
+    fillDistricts(cityField.value);
+    districtField.value = p.district || '';
+    rooms.value = p.rooms || '';
+    existingImageUrl = p.image_url || null;
+    if (existingImageUrl && preview) {
+      preview.classList.add('has-image');
+      preview.innerHTML = `<img src="${existingImageUrl}" alt="Photo actuelle">`;
+    }
+  }
 })();
 if (pf) pf.addEventListener('submit', async e => {
   e.preventDefault();
@@ -86,7 +114,7 @@ if (pf) pf.addEventListener('submit', async e => {
     return
   }
 
-  let image_url = null;
+  let image_url = editId ? existingImageUrl : null;
   const file = imageInput?.files[0];
   if (file) {
     m.textContent = 'Envoi de la photo…';
@@ -104,11 +132,7 @@ if (pf) pf.addEventListener('submit', async e => {
     image_url = pub.publicUrl;
   }
 
-  m.textContent = 'Publication…';
-  const {
-    error
-  } = await supabase.from('properties').insert({
-    owner_id: user.id,
+  const payload = {
     title: title.value,
     description: description.value,
     type: type.value,
@@ -116,18 +140,36 @@ if (pf) pf.addEventListener('submit', async e => {
     city: city.value,
     district: district.value,
     rooms: Number(rooms.value),
-    image_url,
-    status: 'available'
-  });
+    image_url
+  };
+
+  let error;
+  if (editId) {
+    m.textContent = 'Enregistrement…';
+    ({
+      error
+    } = await supabase.from('properties').update(payload).eq('id', editId).eq('owner_id', user.id));
+  } else {
+    m.textContent = 'Publication…';
+    ({
+      error
+    } = await supabase.from('properties').insert({
+      ...payload,
+      owner_id: user.id,
+      status: 'available'
+    }));
+  }
   if (error) {
     m.textContent = error.message;
     return
   }
-  m.textContent = 'Annonce publiée avec succès.';
-  pf.reset();
-  if (preview) {
-    preview.classList.remove('has-image');
-    preview.innerHTML = previewDefault;
+  m.textContent = editId ? 'Modifications enregistrées.' : 'Annonce publiée avec succès.';
+  if (!editId) {
+    pf.reset();
+    if (preview) {
+      preview.classList.remove('has-image');
+      preview.innerHTML = previewDefault;
+    }
   }
   setTimeout(() => location.href = 'dashboard.html', 700)
 });
