@@ -40,7 +40,7 @@ if (detail)(async () => {
     ? `<img class="detail-image" src="${p.image_url}" alt="">`
     : `<div class="detail-image detail-image--placeholder"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></div>`;
   detail.innerHTML =
-    `<div>${image}</div><div class="detail-card"><span class="eyebrow">${p.type||'Logement'}</span><h1>${p.title}</h1><div class="detail-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div><p>${p.description||''}</p><p><strong>Localisation</strong><br>${p.city||''}${p.district?' — '+p.district:''}</p><p><strong>Pièces</strong><br>${p.rooms||'-'}</p><a class="btn btn-primary" href="mailto:?subject=KAZA - ${encodeURIComponent(p.title)}">Contacter le bailleur</a></div>`
+    `<div>${image}</div><div class="detail-card"><span class="eyebrow">${p.type||'Logement'}</span><h1>${p.title}</h1><div class="detail-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div><p>${p.description||''}</p><p><strong>Localisation</strong><br>${p.city||''}${p.district?' — '+p.district:''}</p><p><strong>Pièces</strong><br>${p.rooms||'-'}</p><a class="btn btn-primary" href="messagerie.html?with=${p.owner_id}&property=${p.id}">Contacter le bailleur</a></div>`
 })();
 const pf = document.querySelector('#publishForm');
 const imageInput = document.querySelector('#imageFile');
