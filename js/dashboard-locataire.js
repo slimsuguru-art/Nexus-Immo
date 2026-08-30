@@ -1,6 +1,6 @@
 import { supabase } from './supabase.js';
 
-const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80';
+const placeholderIcon = `<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>`;
 
 (async () => {
   const { data: { user } } = await supabase.auth.getUser();
@@ -60,7 +60,7 @@ const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159
   const bailleur = contrat.profiles || {};
 
   box.innerHTML = `
-    <img class="lease-image" src="${p.image_url || fallbackImg}" alt="">
+    ${p.image_url ? `<img class="lease-image" src="${p.image_url}" alt="">` : `<div class="lease-image lease-image--placeholder">${placeholderIcon}</div>`}
     <div class="lease-body">
       <span class="eyebrow">Votre logement</span>
       <h2>${p.title || 'Logement'}</h2>
@@ -74,7 +74,7 @@ const fallbackImg = 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159
           <span>Bailleur</span>
           <strong>${bailleur.full_name || '—'}</strong>
         </div>
-        <a class="btn btn-ghost btn-sm" href="mailto:?subject=${encodeURIComponent('KAZA - ' + (p.title || ''))}">Contacter</a>
+        <a class="btn btn-ghost btn-sm" href="messagerie.html?with=${contrat.bailleur_id}&property=${contrat.property_id}">Contacter</a>
       </div>
     </div>`;
 })();
