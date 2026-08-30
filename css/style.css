@@ -2331,3 +2331,38 @@ textarea {
     min-width: 100%
   }
 }
+
+/* Bailleur dashboard: property card management actions */
+.property-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #eef1f5
+}
+
+.btn-chip {
+  border: 1px solid #c7d2dd;
+  background: #fff;
+  color: #1e3a5f;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s ease
+}
+
+.btn-chip:hover {
+  background: #eef2f7
+}
+
+.btn-chip--danger {
+  border-color: #fecaca;
+  color: #b91c1c
+}
+
+.btn-chip--danger:hover {
+  background: #fef2f2
+}
