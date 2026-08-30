@@ -117,12 +117,18 @@ function renderUpcoming(contrats) {
   } else {
     grid.innerHTML = list.length
       ? list.map(p => `
-        <article class="property-card">
+        <article class="property-card" data-property="${p.id}">
           ${p.image_url ? `<img class="property-image" src="${p.image_url}" alt="">` : `<div class="property-image--placeholder">${placeholderIcon}</div>`}
           <div class="property-body">
             <h3>${p.title}</h3>
-            <div class="property-meta">${p.city || ''} · ${p.status}</div>
+            <div class="property-meta">${p.city || ''} · ${p.status === 'rented' ? 'Louée' : p.status === 'draft' ? 'Retirée' : 'Disponible'}</div>
             <div class="property-price">${Number(p.price || 0).toLocaleString('fr-FR')} FCFA</div>
+            <div class="property-actions">
+              <a class="btn-chip" href="publish.html?edit=${p.id}">Modifier</a>
+              ${p.status === 'available' ? `<a class="btn-chip" href="contrat-nouveau.html?property=${p.id}">Créer un contrat</a>` : ''}
+              <button class="btn-chip" data-toggle="${p.id}" data-status="${p.status}">${p.status === 'rented' ? 'Marquer disponible' : 'Marquer louée'}</button>
+              <button class="btn-chip btn-chip--danger" data-delete="${p.id}">Supprimer</button>
+            </div>
           </div>
         </article>
       `).join('')
@@ -145,6 +151,29 @@ function renderUpcoming(contrats) {
       `;
     }).join('')
     : '<div class="empty-state">Aucun contrat en cours.</div>';
+
+  grid.addEventListener('click', async e => {
+    const toggleBtn = e.target.closest('[data-toggle]');
+    const deleteBtn = e.target.closest('[data-delete]');
+
+    if (toggleBtn) {
+      const id = toggleBtn.dataset.toggle;
+      const next = toggleBtn.dataset.status === 'rented' ? 'available' : 'rented';
+      toggleBtn.disabled = true;
+      const { error } = await supabase.from('properties').update({ status: next }).eq('id', id);
+      if (!error) location.reload();
+      else toggleBtn.disabled = false;
+    }
+
+    if (deleteBtn) {
+      if (!confirm('Supprimer définitivement cette annonce ?')) return;
+      const id = deleteBtn.dataset.delete;
+      deleteBtn.disabled = true;
+      const { error } = await supabase.from('properties').delete().eq('id', id);
+      if (!error) deleteBtn.closest('.property-card').remove();
+      else deleteBtn.disabled = false;
+    }
+  });
 })();
 
 document.querySelector('#logoutBtn')?.addEventListener('click', async () => {
