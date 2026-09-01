@@ -118,7 +118,10 @@ function renderUpcoming(contrats) {
     grid.innerHTML = list.length
       ? list.map(p => `
         <article class="property-card" data-property="${p.id}">
-          ${p.image_url ? `<img class="property-image" src="${p.image_url}" alt="">` : `<div class="property-image--placeholder">${placeholderIcon}</div>`}
+          <div class="property-media">
+            ${p.image_url ? `<img class="property-image" src="${p.image_url}" alt="">` : `<div class="property-image--placeholder">${placeholderIcon}</div>`}
+            ${p.created_at ? `<span class="property-verified"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12.5 10.8 15 16 9"/></svg>Publiée le ${new Date(p.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}</span>` : ''}
+          </div>
           <div class="property-body">
             <h3>${p.title}</h3>
             <div class="property-meta">${p.city || ''} · ${p.status === 'rented' ? 'Louée' : p.status === 'draft' ? 'Retirée' : 'Disponible'}</div>
