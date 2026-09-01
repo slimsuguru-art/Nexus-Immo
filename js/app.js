@@ -38,7 +38,13 @@ function card(p) {
     ? `<img class="property-image" src="${p.image_url}" alt="">`
     : placeholder;
   const badge = p.type ? `<span class="property-badge">${p.type}</span>` : '';
-  return `<article class="property-card"><a href="property.html?id=${p.id}"><div class="property-media">${image}${badge}</div><div class="property-body"><h3>${p.title||'Sans titre'}</h3><div class="property-meta">${p.city||''}${p.district?' · '+p.district:''} · ${p.rooms||'-'} pièce(s)</div><div class="property-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div></div></a></article>`;
+  const publishedDate = p.created_at
+    ? new Date(p.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+    : '';
+  const verified = publishedDate
+    ? `<span class="property-verified"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12.5 10.8 15 16 9"/></svg>Publiée le ${publishedDate}</span>`
+    : '';
+  return `<article class="property-card"><a href="property.html?id=${p.id}"><div class="property-media">${image}${badge}${verified}</div><div class="property-body"><h3>${p.title||'Sans titre'}</h3><div class="property-meta">${p.city||''}${p.district?' · '+p.district:''} · ${p.rooms||'-'} pièce(s)</div><div class="property-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div></div></a></article>`;
 }
 
 function emptyState(title, text) {
