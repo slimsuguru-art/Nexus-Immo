@@ -39,8 +39,36 @@ if (detail)(async () => {
   const image = p.image_url
     ? `<img class="detail-image" src="${p.image_url}" alt="">`
     : `<div class="detail-image detail-image--placeholder"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></div>`;
+
+  const roomCount = Math.min(Number(p.rooms) || 0, 8);
+  const roomPlan = roomCount
+    ? `<div class="room-plan">${Array.from({ length: roomCount }, (_, i) => `<div class="room-plan-cell">Pièce ${i + 1}</div>`).join('')}</div>
+       <p class="room-plan-caption">Schéma indicatif du nombre de pièces — ne représente pas l'agencement réel du logement.</p>`
+    : '';
+
+  const { count: contratCount } = await supabase
+    .from('contrats')
+    .select('id', { count: 'exact', head: true })
+    .eq('property_id', id);
+
+  const historique = contratCount
+    ? `<p class="rental-history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3.5 2"/></svg>${contratCount === 1 ? '1ère location suivie sur KAZA' : contratCount + ' locations suivies sur KAZA'}</p>`
+    : '';
+
   detail.innerHTML =
-    `<div>${image}</div><div class="detail-card"><span class="eyebrow">${p.type||'Logement'}</span><h1>${p.title}</h1><div class="detail-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div><p>${p.description||''}</p><p><strong>Localisation</strong><br>${p.city||''}${p.district?' — '+p.district:''}</p><p><strong>Pièces</strong><br>${p.rooms||'-'}</p><a class="btn btn-primary" href="messagerie.html?with=${p.owner_id}&property=${p.id}">Contacter le bailleur</a></div>`
+    `<div>${image}</div><div class="detail-card"><span class="eyebrow">${p.type||'Logement'}</span><h1>${p.title}</h1><div class="detail-price">${Number(p.price||0).toLocaleString('fr-FR')} FCFA / mois</div><p>${p.description||''}</p><p><strong>Localisation</strong><br>${p.city||''}${p.district?' — '+p.district:''}</p><p><strong>Pièces</strong><br>${p.rooms||'-'}</p>${roomPlan}${historique}<a class="btn btn-primary" href="messagerie.html?with=${p.owner_id}&property=${p.id}">Contacter le bailleur</a><div class="visit-request"><label>Demander une visite<input type="date" id="visitDate"></label><button id="visitBtn" class="btn btn-ghost" type="button">Planifier une visite</button></div></div>`;
+
+  document.querySelector('#visitBtn')?.addEventListener('click', async () => {
+    const dateVal = document.querySelector('#visitDate').value;
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+    const msg = dateVal
+      ? `Bonjour, je souhaiterais visiter ce logement le ${new Date(dateVal).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}. Est-ce possible ?`
+      : 'Bonjour, serait-il possible de visiter ce logement ?';
+    const target = `messagerie.html?with=${p.owner_id}&property=${p.id}&msg=${encodeURIComponent(msg)}`;
+    location.href = user ? target : `login.html?redirect=${encodeURIComponent(target)}`;
+  });
 })();
 const pf = document.querySelector('#publishForm');
 const imageInput = document.querySelector('#imageFile');
