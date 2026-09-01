@@ -317,17 +317,57 @@ textarea {
 }
 
 .property-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 8px 30px #0f172a0d;
+  position: relative;
+  background: #FDFBF5;
+  border: 1px solid #E4D9BC;
+  border-radius: 3px;
+  padding: 9px 9px 16px;
+  box-shadow: 0 14px 26px -12px #1e293b40;
+  transform: rotate(var(--tilt, 0deg));
   transition: transform .25s ease, box-shadow .25s ease
 }
 
+.property-grid .property-card:nth-child(6n+1) {
+  --tilt: -1deg
+}
+
+.property-grid .property-card:nth-child(6n+2) {
+  --tilt: .7deg
+}
+
+.property-grid .property-card:nth-child(6n+3) {
+  --tilt: -.4deg
+}
+
+.property-grid .property-card:nth-child(6n+4) {
+  --tilt: .5deg
+}
+
+.property-grid .property-card:nth-child(6n+5) {
+  --tilt: -.8deg
+}
+
+.property-grid .property-card:nth-child(6n+6) {
+  --tilt: .3deg
+}
+
+.property-card::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f4e2ab, #B7975A 72%);
+  box-shadow: 0 3px 6px #0f172a4d;
+  z-index: 2
+}
+
 .property-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px #1e3a5f1f
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow: 0 24px 44px -12px #1e293b4d
 }
 
 .property-media {
@@ -348,12 +388,40 @@ textarea {
   border-radius: 999px
 }
 
+.property-verified {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #FDFBF5ee;
+  backdrop-filter: blur(4px);
+  color: #3F6B54;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .02em;
+  padding: 4px 9px;
+  border-radius: 999px
+}
+
+.property-verified svg {
+  width: 11px;
+  height: 11px;
+  stroke: #3F6B54;
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
 .property-image {
   width: 100%;
   height: 210px;
   object-fit: cover;
   background: #e2e8f0;
-  display: block
+  display: block;
+  border-radius: 1px
 }
 
 .property-image--placeholder {
@@ -364,7 +432,8 @@ textarea {
   justify-content: center;
   background: #F1EBDA;
   background-image: linear-gradient(rgba(120, 90, 40, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 90, 40, .08) 1px, transparent 1px);
-  background-size: 18px 18px
+  background-size: 18px 18px;
+  border-radius: 1px
 }
 
 .property-image--placeholder svg {
