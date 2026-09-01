@@ -158,6 +158,8 @@ document.querySelector('#logoutBtn')?.addEventListener('click', async () => {
   const params = new URLSearchParams(location.search);
   const withId = params.get('with');
   if (withId) await openConversation(withId, params.get('property'), null);
+  const prefill = params.get('msg');
+  if (prefill && composeInput) composeInput.value = decodeURIComponent(prefill);
 
   supabase
     .channel('messages-inbox')
