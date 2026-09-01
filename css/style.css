@@ -2435,3 +2435,81 @@ textarea {
 .btn-chip--danger:hover {
   background: #fef2f2
 }
+
+/* Property detail: room-count schematic, rental history, visit request */
+.room-plan {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: 6px;
+  border: 1px solid #E4D9BC;
+  border-radius: 10px;
+  padding: 10px;
+  background: #F8F4EA;
+  margin: 6px 0 4px
+}
+
+.room-plan-cell {
+  aspect-ratio: 1;
+  background: #FDFBF5;
+  border: 1px dashed #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10.5px;
+  color: #94a3b8
+}
+
+.room-plan-caption {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0 0 18px
+}
+
+.rental-history {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #3F6B54;
+  background: #ECF1E7;
+  border-radius: 999px;
+  padding: 7px 14px;
+  width: fit-content;
+  margin: 0 0 20px
+}
+
+.rental-history svg {
+  width: 15px;
+  height: 15px;
+  stroke: #3F6B54;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none
+}
+
+.visit-request {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #eef1f5
+}
+
+.visit-request label {
+  flex: 1;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155
+}
+
+.visit-request input {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px
+}
