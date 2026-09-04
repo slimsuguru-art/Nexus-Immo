@@ -448,6 +448,18 @@ textarea {
   padding: 18px
 }
 
+.property-body h3,
+.step h3,
+.feature h3,
+.dossier-card strong,
+.contrat-row strong,
+.upcoming-row strong,
+.lease-contact strong {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -.01em
+}
+
 .property-body h3 {
   margin: 0 0 7px
 }
