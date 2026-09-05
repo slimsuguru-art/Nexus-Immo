@@ -141,7 +141,12 @@ function renderUpcoming(contrats) {
   const contratsBox = document.querySelector('#contratsList');
   contratsBox.innerHTML = contratList.length
     ? contratList.map(c => {
-      const moisRestants = Math.max(0, Math.round((new Date(c.date_fin) - new Date()) / 86400000 / 30));
+      const joursRestants = Math.round((new Date(c.date_fin) - new Date()) / 86400000);
+      const dureeLabel = joursRestants <= 0
+        ? 'Échéance dépassée'
+        : joursRestants < 30
+          ? joursRestants + ' jour' + (joursRestants > 1 ? 's' : '') + ' restant' + (joursRestants > 1 ? 's' : '')
+          : Math.round(joursRestants / 30) + ' mois restants';
       return `
         <div class="contrat-row">
           <div>
@@ -149,7 +154,7 @@ function renderUpcoming(contrats) {
             <span class="contrat-sub">${c.profiles?.full_name || 'Locataire'}</span>
           </div>
           <span class="contrat-status contrat-status--${c.statut}">${c.statut.replace('_', ' ')}</span>
-          <span class="contrat-months">${c.statut === 'actif' ? moisRestants + ' mois restants' : ''}</span>
+          <span class="contrat-months">${c.statut === 'actif' ? dureeLabel : ''}</span>
         </div>
       `;
     }).join('')
