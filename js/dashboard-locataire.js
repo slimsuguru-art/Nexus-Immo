@@ -55,7 +55,12 @@ const placeholderIcon = `<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/>
   const totalJours = Math.max(1, (fin - debut) / 86400000);
   const joursEcoules = Math.min(totalJours, Math.max(0, (aujourdhui - debut) / 86400000));
   const progression = Math.round((joursEcoules / totalJours) * 100);
-  const moisRestants = Math.max(0, Math.round((fin - aujourdhui) / 86400000 / 30));
+  const joursRestants = Math.round((fin - aujourdhui) / 86400000);
+  const dureeLabel = joursRestants <= 0
+    ? 'Bail arrivé à échéance'
+    : joursRestants < 30
+      ? joursRestants + ' jour' + (joursRestants > 1 ? 's' : '') + ' restant' + (joursRestants > 1 ? 's' : '')
+      : Math.round(joursRestants / 30) + ' mois restants';
   const p = contrat.properties || {};
   const bailleur = contrat.profiles || {};
 
@@ -67,7 +72,7 @@ const placeholderIcon = `<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/>
       <p class="lease-address">${p.city || ''}${p.district ? ' — ' + p.district : ''}</p>
       <div class="lease-progress">
         <div class="lease-progress-bar"><div class="lease-progress-fill" style="width:${progression}%"></div></div>
-        <div class="lease-progress-label"><strong>${moisRestants}</strong> mois restants — échéance le ${fin.toLocaleDateString('fr-FR')}</div>
+        <div class="lease-progress-label"><strong>${dureeLabel}</strong> (fin le ${fin.toLocaleDateString('fr-FR')})</div>
       </div>
       <div class="lease-contact">
         <div>
